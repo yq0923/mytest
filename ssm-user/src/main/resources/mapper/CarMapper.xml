@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fh.mapper.UserMapper">
+
+	<select id="queryList" resultMap="MapList" parameterType="page">
+		select c.*, CONCAT(IFNULL(a1.`name`,""),IF(a2.`name` is null,"","-->"),IFNULL(a2.`name`,""),IF(a3.`name` is null,"","-->"),IFNULL(a3.`name`,"")) 'area'
+		from t_user c LEFT JOIN t_area a1 ON c.aid1 = a1.id
+		LEFT JOIN t_area a2 ON c.aid2 = a2.id
+		LEFT JOIN t_area a3 ON c.aid3 = a3.id
+		limit #{start},#{length}
+	</select>
+
+
+	<update id="updateUser" parameterType="user">
+		update t_user set userName=#{userName},passWord=#{passWord},sex=#{sex},aid1=#{aid1},aid2=#{aid2},aid3=#{aid3},registerTime=#{registerTime} where id=#{id}
+	</update>
+
+
+	<resultMap id="MapList" type="Map">
+		<result property="id" column="id"></result>
+		<result property="userName" column="userName"></result>
+		<result property="passWord" column="passWord"></result>
+		<result property="sex" column="sex"></result>
+		<result property="registerTime" column="registerTime"></result>
+		<result property="area" column="area"></result>
+	</resultMap>
+
+</mapper>
